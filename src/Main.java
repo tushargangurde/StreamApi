@@ -23,6 +23,7 @@ public class Main {
 		emp = employeeList.stream().sorted(Comparator.comparingDouble(Employee::getSalary).reversed()).skip(1)
 				.findFirst();
 		System.out.println("Second highest salary:" + emp.get());
+		System.out.println("-------------------------------------------------------------");
 
 		emp = employeeList.stream().min(Comparator.comparingDouble(Employee::getSalary));
 		System.out.println("Min salary:" + emp.get());
@@ -36,10 +37,9 @@ public class Main {
 		System.out.println("Group By Department:" + map);
 		System.out.println("-------------------------------------------------------------");
 
+		System.out.println("Department counting");
 		Map<String, Long> output = employeeList.stream()
 				.collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()));
-
-		System.out.println("Department counting");
 		output.forEach((k, v) -> {
 			System.out.println(k + "-" + v);
 		});
@@ -85,6 +85,19 @@ public class Main {
 		System.out.println("Employee joined in 2014");
 		employeeList.stream().filter(e -> e.getYearOfJoining() == 2014).forEach(System.out::println);
 		System.out.println("-------------------------------------------------------------");
+
+		System.out.println("Find the vowel count");
+		String input = "hello hello";
+
+		long count = input.chars().filter((e) -> {
+			return (e == 'a' || e == 'e' || e == 'i' || e == 'o' || e == 'u');
+		}).count();
+		System.out.println("No of vowels:" + count);
+
+		System.out.println("Find the duplicates in the string");
+		Map<String, Long> out = input.chars().mapToObj(e -> (char) e)
+				.collect(Collectors.groupingBy(Object::toString, Collectors.counting()));
+		out.forEach((k, v) -> System.out.println(k + "-" + v));
 
 	}
 
