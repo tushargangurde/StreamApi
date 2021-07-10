@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -54,15 +54,19 @@ public class Main {
 		System.out.println("Average age by Gender:" + outputList);
 		System.out.println("-------------------------------------------------------------");
 
-		employeeList.stream().sorted(Comparator.comparing(Employee::getName).thenComparing(Employee::getSalary));
+		employeeList.sort(
+				Comparator.comparing(Employee::getName).thenComparing(Comparator.comparingDouble(Employee::getSalary)));
 		System.out.println("Sorted based on Name & Salary");
 		employeeList.forEach(System.out::println);
 		System.out.println("-------------------------------------------------------------");
 
-		System.out.println("Find dulicate numbers from list");
+		System.out.println("Find frequency of numbers from list");
 		List<Integer> numbers = Arrays.asList(new Integer[] { 1, 2, 1, 3, 4, 4, 3 });
-		numbers.stream().filter(e -> Collections.frequency(numbers, e) > 1).collect(Collectors.toSet())
-				.forEach(System.out::println);
+		Map<Integer, Long> outputNumbers = numbers.stream()
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		outputNumbers.forEach((k, v) -> {
+			System.out.println(k + "-" + v);
+		});
 		System.out.println("-------------------------------------------------------------");
 
 		outputList = employeeList.stream()
@@ -72,6 +76,16 @@ public class Main {
 			System.out.println(k + "-" + v);
 		});
 		System.out.println("-------------------------------------------------------------");
+
+		System.out.println("List of employee whoose salary is greater than 20000 & name starts with 'M'");
+		employeeList.stream().filter(e -> e.getSalary() > 20000 && e.getName().startsWith("M"))
+				.forEach(System.out::println);
+		System.out.println("-------------------------------------------------------------");
+
+		System.out.println("Employee joined in 2014");
+		employeeList.stream().filter(e -> e.getYearOfJoining() == 2014).forEach(System.out::println);
+		System.out.println("-------------------------------------------------------------");
+
 	}
 
 }
