@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -40,9 +41,7 @@ public class Main {
 		System.out.println("Department counting");
 		Map<String, Long> output = employeeList.stream()
 				.collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()));
-		output.forEach((k, v) -> {
-			System.out.println(k + "-" + v);
-		});
+		output.forEach((k, v) -> System.out.println(k + "-" + v));
 		System.out.println("-------------------------------------------------------------");
 
 		double average = employeeList.stream().mapToDouble(Employee::getSalary).average().getAsDouble();
@@ -64,17 +63,13 @@ public class Main {
 		List<Integer> numbers = Arrays.asList(new Integer[] { 1, 2, 1, 3, 4, 4, 3 });
 		Map<Integer, Long> outputNumbers = numbers.stream()
 				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
-		outputNumbers.forEach((k, v) -> {
-			System.out.println(k + "-" + v);
-		});
+		outputNumbers.forEach((k, v) -> System.out.println(k + "-" + v));
 		System.out.println("-------------------------------------------------------------");
 
 		outputList = employeeList.stream()
 				.collect(Collectors.groupingBy(Employee::getDepartment, Collectors.summingDouble(Employee::getSalary)));
 		System.out.println("Sum of salary of all departments");
-		outputList.forEach((k, v) -> {
-			System.out.println(k + "-" + v);
-		});
+		outputList.forEach((k, v) -> System.out.println(k + "-" + v));
 		System.out.println("-------------------------------------------------------------");
 
 		System.out.println("List of employee whoose salary is greater than 20000 & name starts with 'M'");
@@ -93,11 +88,18 @@ public class Main {
 			return (e == 'a' || e == 'e' || e == 'i' || e == 'o' || e == 'u');
 		}).count();
 		System.out.println("No of vowels:" + count);
+		System.out.println("-------------------------------------------------------------");
 
 		System.out.println("Find the duplicates in the string");
 		Map<String, Long> out = input.chars().mapToObj(e -> (char) e)
 				.collect(Collectors.groupingBy(Object::toString, Collectors.counting()));
 		out.forEach((k, v) -> System.out.println(k + "-" + v));
+		System.out.println("-------------------------------------------------------------");
+
+		System.out.println("Max salary by Department");
+		employeeList.stream().collect(Collectors.groupingBy(Employee::getDepartment,
+				Collectors.reducing(BinaryOperator.maxBy(Comparator.comparingDouble(Employee::getSalary)))));
+		employeeList.forEach(System.out::println);
 
 	}
 
