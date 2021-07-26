@@ -21,9 +21,8 @@ public class Main {
 		employeeList.add(new Employee(144, "Murali Gowda", 28, "Male", "Product Development", 2014, 32500.0));
 		employeeList.add(new Employee(155, "Nima Roy", 27, "Female", "HR", 2013, 22700.0));
 
-		emp = employeeList.stream().sorted(Comparator.comparingDouble(Employee::getSalary).reversed()).skip(1)
-				.findFirst();
-		System.out.println("Second highest salary:" + emp.get());
+		Optional<Double> sal = employeeList.stream().map(e -> e.getSalary()).sorted(Comparator.reverseOrder()).skip(1).findFirst();
+		System.out.println("Second highest salary:" + sal.get());
 		System.out.println("-------------------------------------------------------------");
 
 		emp = employeeList.stream().min(Comparator.comparingDouble(Employee::getSalary));
