@@ -1,9 +1,11 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -21,7 +23,8 @@ public class Main {
 		employeeList.add(new Employee(144, "Murali Gowda", 28, "Male", "Product Development", 2014, 32500.0));
 		employeeList.add(new Employee(155, "Nima Roy", 27, "Female", "HR", 2013, 22700.0));
 
-		Optional<Double> sal = employeeList.stream().map(e -> e.getSalary()).sorted(Comparator.reverseOrder()).skip(1).findFirst();
+		Optional<Double> sal = employeeList.stream().map(e -> e.getSalary()).sorted(Comparator.reverseOrder()).skip(1)
+				.findFirst();
 		System.out.println("Second highest salary:" + sal.get());
 		System.out.println("-------------------------------------------------------------");
 
@@ -99,6 +102,24 @@ public class Main {
 		employeeList.stream().collect(Collectors.groupingBy(Employee::getDepartment,
 				Collectors.reducing(BinaryOperator.maxBy(Comparator.comparingDouble(Employee::getSalary)))));
 		employeeList.forEach(System.out::println);
+		System.out.println("-------------------------------------------------------------");
+
+		System.out.println("Find the duplicate no from the list");
+		Set<Integer> set = new HashSet<>();
+		numbers.stream().filter(e -> !set.add(e)).collect(Collectors.toSet()).forEach(System.out::println);
+		System.out.println("-------------------------------------------------------------");
+
+		System.out.println("Multiplication using Functional Interface");
+		FInterface fInterface = (a, b) -> a * b;
+		System.out.println("Multiplication of 6 & 7 is:" + fInterface.multiply(6, 7));
+		System.out.println("-------------------------------------------------------------");
+
+		System.out.println("Find the no of occurences int the String");
+		String str = "welcome to my world my world welcome you";
+		List<String> strList = Arrays.asList(str.split(" "));
+		Map<String, Long> strMap = strList.stream()
+				.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+		System.out.println(strMap);
 
 	}
 
